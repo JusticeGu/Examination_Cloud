@@ -1,0 +1,21 @@
+server:
+  port: 8002
+
+spring:
+  application:
+    name: povideri
+  boot:
+    admin:
+      client:
+        url: http://localhost:8769
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      namespace: 60b4bf51-c630-4468-9d42-2a8671c08e9c
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:*:

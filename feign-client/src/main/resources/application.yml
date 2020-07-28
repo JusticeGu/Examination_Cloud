@@ -1,0 +1,13 @@
+server:
+  port: 8003
+spring:
+  application:
+    name: feign-client
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+feign:
+  hystrix:
+    enabled: true
