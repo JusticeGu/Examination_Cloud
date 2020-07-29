@@ -6,6 +6,7 @@ import com.exam.result.ResponseData;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  **/
 @EnableDiscoveryClient
 @SpringBootApplication
+@EnableFeignClients
 public class ExamCoreExamApplication {
     public static void main(String[] args) {
         System.out.println("考试核心服务已启动...");

@@ -137,15 +137,6 @@ public class UserController implements Serializable {
         return mav;
     }
 
-    //前端用户注册
-    //http://localhost:8080/saveUser?userName=xiaoli8&userPassword=123
-    @GetMapping("/addUser" )
-     public String addUser(){
-            return "/User/add";
-            }
-
-
-
     //http://localhost:8080/updateUser?Id=1&userName=%E5%A4%A7%E8%80%81%E6%9D%A8&userPassword=1111
     @GetMapping(value = "/updateUser")
     public String updateUser(int UId,String userName,String userPassword){

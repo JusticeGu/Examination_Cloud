@@ -9,13 +9,16 @@
         <outputRelativeToContentRoot value="true" />
         <module name="ExamAuth" />
         <module name="ExamCore-User" />
-        <module name="Service" />
-        <module name="feign-client" />
+        <module name="ExamMessage" />
         <module name="ExamCore-exam" />
-        <module name="ExamCore-Message" />
         <module name="ExamGateWay" />
         <module name="ExamAdmin" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ExamCore-Message" target="1.5" />
+      <module name="feign-client" target="1.5" />
+      <module name="Service" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>

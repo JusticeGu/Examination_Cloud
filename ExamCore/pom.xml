@@ -14,7 +14,7 @@
     <modules>
         <module>ExamCore-User</module>
         <module>ExamCore-exam</module>
-        <module>ExamCore-Message</module>
+
     </modules>
 <dependencies>
     <dependency>
@@ -51,17 +51,11 @@
         <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         <version>2.2.1.RELEASE</version>
     </dependency>
+    <dependency>
+        <groupId>de.codecentric</groupId>
+        <artifactId>spring-boot-admin-starter-client</artifactId>
+        <version>2.1.0</version>
+    </dependency>
 </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <fork>true</fork>
-                </configuration>
 
-            </plugin>
-        </plugins>
-    </build>
 </project>

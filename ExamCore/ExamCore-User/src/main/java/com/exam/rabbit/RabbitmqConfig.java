@@ -16,9 +16,9 @@ import org.springframework.amqp.core.Queue;
 
 @Configuration
 public class RabbitmqConfig {
-    public static final String QUENE_NAME="email_queue";//队列名称
-    public static final String EXCHANGE="email_exchange";//交换器名称
-    public static final String ROUTEKEY="email_routekey";
+    public static final String QUENE_NAME="email_queue_cloud";//队列名称
+    public static final String EXCHANGE="email_exchange_cloud";//交换器名称
+    public static final String ROUTEKEY="email_routekey_cloud";
 
     @Autowired
     private Environment env;
@@ -53,6 +53,6 @@ public class RabbitmqConfig {
 
     @Bean
     Binding binding() {//绑定
-        return BindingBuilder.bind(queue()).to(exchange()).with("email_queue");
+        return BindingBuilder.bind(queue()).to(exchange()).with("email_queue_cloud");
     }
 }

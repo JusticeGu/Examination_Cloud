@@ -15,7 +15,7 @@ public class SenderA {
     public void send(Map map) {
         System.out.println("邮件正在上传至队列 : ");
         //使用AmqpTemplate将消息发送到消息队列QueueHello中去
-        this.rabbitTemplate.convertAndSend("email_exchange","email_queue",map);
+        this.rabbitTemplate.convertAndSend("email_exchange_cloud","email_queue_cloud",map);
     }
 
 }

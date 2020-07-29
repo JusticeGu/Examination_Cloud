@@ -9,12 +9,12 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>Service</module>
-        <module>feign-client</module>
+
         <module>ExamGateWay</module>
         <module>ExamCore</module>
         <module>ExamAdmin</module>
         <module>ExamAuth</module>
+        <module>ExamMessage</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
@@ -28,24 +28,8 @@
         <pac4j.version>4.0.0</pac4j.version>
         <pac4j-cas.version>3.0.2</pac4j-cas.version>
     </properties>
-    <repositories>
-        <repository>
-            <id>alimaven</id>
-            <name>Maven Aliyun Mirror</name>
-            <url>http://maven.aliyun.com/nexus/content/repositories/central/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>JBoss repository</id>
-            <url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
-        </repository>
 
-    </repositories>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -173,4 +157,5 @@
             <version>1.4.1</version>
         </dependency>
     </dependencies>
+
 </project>
