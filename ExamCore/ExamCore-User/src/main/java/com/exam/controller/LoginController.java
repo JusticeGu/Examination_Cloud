@@ -5,6 +5,7 @@ import com.exam.dao.UserDAO;
 import com.exam.rabbit.SenderA;
 import com.exam.result.ExceptionMsg;
 import com.exam.result.ResponseData;
+import com.exam.service.AdminUserRoleService;
 import com.exam.service.RedisService;
 import com.exam.service.UserService;
 import com.exam.util.JwtUtils;
@@ -39,6 +40,8 @@ public class LoginController implements Serializable {
     private UserDAO userDAO;
     @Autowired
     private SenderA queueSender;
+    @Autowired
+    AdminUserRoleService adminUserRoleService;
     @Resource
     private RedisService redisService;
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -46,7 +49,7 @@ public class LoginController implements Serializable {
     @PostMapping("/api/register")
     @CrossOrigin
     @ApiOperation("用户注册接口")
-    public ResponseData register(@RequestBody User user, @RequestParam("code") String code) {
+    public ResponseData register(@RequestBody User user,@RequestParam("code") String code) {
         if(!userService.checkmailcode(user.getEmail(),code)){
             return new ResponseData(ExceptionMsg.FAILED,"验证码错误，请重新输入");
         }
@@ -95,9 +98,12 @@ public class LoginController implements Serializable {
             String token = JwtUtils.sign(username,JwtUtils.SECRET_KEY);
             Map<String,Object> userinfo = new Hashtable<>();
             userinfo.put("token",token);
-            userinfo.put("username",username );
-            redisService.set("tk-"+user.getUsername(),token,600);
-            return new ResponseData(ExceptionMsg.SUCCESS,token);
+            userinfo.put("username",username);
+            userinfo.put("uno",user.getUno());
+            userinfo.put("uid",user.getUId());
+            userinfo.put("role",adminUserRoleService.listAllByUid(user.getUId()));
+            redisService.hmset("TK:"+user.getUsername(),userinfo,600);
+            return new ResponseData(ExceptionMsg.SUCCESS,userinfo);
         } catch (IncorrectCredentialsException e) {
             return new ResponseData(ExceptionMsg.Login_FAILED_1,"用户名或密码错误");
         } catch (UnknownAccountException e) {
@@ -113,7 +119,7 @@ public class LoginController implements Serializable {
     public ResponseData logout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-     //   redisService.del();
+        //   redisService.del();
         String message = "成功登出";
         return new ResponseData(ExceptionMsg.SUCCESS,message);
     }
@@ -157,8 +163,8 @@ public class LoginController implements Serializable {
         }
     }
     @ResponseBody
-    @GetMapping("api/aufeign")
-    @ApiOperation("用户登录状态远端调用")
+    @GetMapping("/api/aufeign")
+    @ApiOperation("用户登录状态远程方法接口")
     @CrossOrigin
     public String aufeign() {
         try {
@@ -166,9 +172,10 @@ public class LoginController implements Serializable {
             return username;
         }
         catch (Exception e){
-            return"fail";
+            return "undefine";
         }
     }
+
     @GetMapping("api/authentication")
     @CrossOrigin
     @ApiOperation("用户登录状态监测接口2")
@@ -178,9 +185,9 @@ public class LoginController implements Serializable {
             User user = userService.findByUsername(username);
             return new ResponseData(ExceptionMsg.SUCCESS,user.getUsername());
         }
-       catch (Exception e){
-           return new ResponseData(ExceptionMsg.FAILED,"fail");
-       }
+        catch (Exception e){
+            return new ResponseData(ExceptionMsg.FAILED,"fail");
+        }
 
     }
 

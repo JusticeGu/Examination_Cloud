@@ -12,6 +12,7 @@ import com.exam.entity.Questions;
 import com.exam.service.CourseService;
 import com.exam.service.PaperService;
 import com.exam.service.QuestionsService;
+import com.exam.service.UserService;
 import com.exam.util.FileUtil;
 import com.google.common.collect.Lists;
 
@@ -40,6 +41,8 @@ public class QuestionsServiceimpl implements QuestionsService {
     QuestionsService questionsService;
     @Autowired
     CourseService courseService;
+    @Autowired
+    UserService userService;
     @Override
     public List<Questions> list() {
         List<Questions> list = questionsDAO.findAll();
@@ -59,8 +62,8 @@ public class QuestionsServiceimpl implements QuestionsService {
         Long createtime = now.getTime();
         questions.setCreateTime(createtime);
         questions.setUpdateTime(createtime);
-     //   String username = userService.getusernamebysu();
-        questions.setCreateBy("sys");
+        String username = userService.getusernamebysu();
+        questions.setCreateBy(username);
   //      if (!courseService.isexist(questions.getCid())){return 3;}
         try {
             questionsDAO.save(questions);

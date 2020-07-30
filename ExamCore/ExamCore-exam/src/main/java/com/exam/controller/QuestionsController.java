@@ -106,5 +106,10 @@ public class QuestionsController {
     public  ResponseData getQuestionsRec(){
         return new ResponseData(ExceptionMsg.SUCCESS, questionsService.getQuestionsRec());
     }
+    @RequestMapping("/feignqu")
+    @ApiOperation("题目远程调用")
+    public  Questions getfeignqu(int qid){
+        return questionsService.getquestionbyid(qid);
+    }
 
 }

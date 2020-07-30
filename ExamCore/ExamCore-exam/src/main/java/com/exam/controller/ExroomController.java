@@ -80,7 +80,7 @@ public class ExroomController implements Serializable {
     public ResponseData enterexroom(@RequestBody Exroom exroom,HttpServletRequest request) {
         String username= "username";
         if (username==null){return new ResponseData(ExceptionMsg.FAILED,"请登陆后再进入考场"); }
-        Map status = exroomService.enterExroom(exroom.getKid(),username);
+        Map status = exroomService.enterExroom(exroom.getKid());
         switch (status.get("code").toString()) {
             case "0":
                 return new ResponseData(ExceptionMsg.FAILED,"考场不存在请重试");
@@ -186,7 +186,7 @@ public class ExroomController implements Serializable {
     @ApiOperation("根据考场号获取该考场允许进入的考生名单")
     public ResponseData getpermissionset(String exid){
         //逻辑
-         Set<Object> list = redisService.setMembers(exid);
+         Set<Object> list = redisService.setMembers("EXP"+exid);
         //   Set<String> set_old = new HashSet<String>();
         return new ResponseData(ExceptionMsg.SUCCESS,list);
     }
@@ -217,7 +217,7 @@ public class ExroomController implements Serializable {
     @GetMapping("/last3exam")
     @ApiOperation("老师端最新发布的3场考试")
     public ResponseData getLastThreeExam(@RequestParam String name){
-        return new ResponseData(ExceptionMsg.SUCCESS, exroomService.getLastThreeExam(name));
+        return new ResponseData(ExceptionMsg.SUCCESS, exroomService.getLastThreeExam());
     }
 
     @GetMapping("/Slast3exam")

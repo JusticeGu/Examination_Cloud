@@ -11,11 +11,12 @@ import java.util.Map;
  **/
 public interface ExamDataService {
     public int addexamdata(int kid,int pid,String uno,int ltimes);
-    public Examdata getexam(int kid, int pid, String uno);
+    public Examdata getexam(int kid,int pid,String uno);
     public boolean delexamdata(int eid);
-    public int updateexamdata(int kid, int pid, String uno, Map ans,float score,String wronglist);
+    public int updateexamdata(int kid, int pid, String uno, Map<String,String> ans,float score,String wronglist);
     public int modifydata(Examdata examdata);
-    public List<Examdata> querydatabyuno(String uno);
+    public List<Examdata> querydatabyuno();
     public List<Examdata>  querydatabykid(int kid);
-    public Map getExamResult(int kid, String uno);
+    public Map getExamResult(int kid);
+    public Map getTExamResult(int kid, String uno);
 }

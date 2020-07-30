@@ -7,15 +7,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ExamAuth" />
+        <module name="ExamAdmin" />
         <module name="ExamCore-User" />
         <module name="ExamMessage" />
+        <module name="ExamCore-DataVis" />
         <module name="ExamCore-exam" />
         <module name="ExamGateWay" />
-        <module name="ExamAdmin" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="ExamAuth" target="1.8" />
       <module name="ExamCore-Message" target="1.5" />
       <module name="feign-client" target="1.5" />
       <module name="Service" target="1.5" />

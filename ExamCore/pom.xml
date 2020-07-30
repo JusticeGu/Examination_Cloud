@@ -14,6 +14,7 @@
     <modules>
         <module>ExamCore-User</module>
         <module>ExamCore-exam</module>
+        <module>ExamCore-DataVis</module>
 
     </modules>
 <dependencies>

@@ -18,7 +18,7 @@ import java.util.Set;
  **/
 @RestController
 @Api(tags = "课程服务接口")
-//@RequestMapping("/api/course")
+@RequestMapping("/api/course")
 public class CouseController {
     @Autowired
     CourseService courseService;

@@ -18,4 +18,14 @@ public class UserServiceimpl implements UserService {
     public String getusername() {
         return userServiceFeign.aufeign();
     }
+
+    @Override
+    public String getusernamebysu() {
+        return userServiceFeign.aufeign();
+    }
+
+    @Override
+    public String getUnoByUsername(String username) {
+        return null;
+    }
 }

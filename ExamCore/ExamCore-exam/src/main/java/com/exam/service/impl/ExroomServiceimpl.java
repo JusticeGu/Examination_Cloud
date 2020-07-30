@@ -41,17 +41,22 @@ public class ExroomServiceimpl implements ExroomService {
      *
      * @return 0-考场不存在 1-成功 2-不在时间范围 3-用户不在允许范围
      */
+
     @Override
-    public Map enterExroom(int kid,String username) {
+    public Map enterExroom(int kid) {
         Map ansmap = new HashMap();
-       // String username = userService.getusernamebysu();
+        String username = userService.getusernamebysu();
+        if(username==null){
+            ansmap.put("code","6");return ansmap;
+        }
         Exroom exroomInDB = findExroom(kid);
         if (exroomInDB==null){  ansmap.put("code","0");return ansmap;}//考场不存在拦截
         Date now= new Date();
         Long createtime = now.getTime();
         if (createtime>=exroomInDB.getDeadline()||createtime<=exroomInDB.getStarttime()){
             ansmap.put("code","2");return ansmap;}//截止时间后进入拦截
-        String uno = "012";
+        //String uno = userService.usernametouno(username);
+        String uno = redisService.hmget("TK:"+username).get("uno").toString();
         if(uno==null){ ansmap.put("code","5");return ansmap;}//学号拦截
         if((!checkpermission(String.valueOf(kid),uno))&&exroomInDB.getGrouptype()==1){
             ansmap.put("code","3");
@@ -65,7 +70,7 @@ public class ExroomServiceimpl implements ExroomService {
             redisService.set("exroom-"+kid, "true",time);
         }
         //逻辑 添加考试记录 返回试题
-      //  int kno = RandomUtil.toFixdLengthString(uno+kid+RandomUtil.generateDigitalString(3), 16);
+        //  int kno = RandomUtil.toFixdLengthString(uno+kid+RandomUtil.generateDigitalString(3), 16);
         ansmap.put("code","1");
         ansmap.put("expiretime",redisService.getExpire("exroom-"+kid));
         return ansmap;
@@ -94,7 +99,7 @@ public class ExroomServiceimpl implements ExroomService {
     }
     @Override
     public Exroom findExroom(int kid) {
-       Exroom exroom= exroomDAO.findByKid(kid);
+        Exroom exroom= exroomDAO.findByKid(kid);
         return exroom;
     }
 
@@ -114,8 +119,8 @@ public class ExroomServiceimpl implements ExroomService {
         Long createtime = now.getTime();
         exroom.setCreateTime(createtime);
         exroom.setUpdateTime(createtime);
-    //    exroom.setCreateBy(userService.getusernamebysu());
-        exroom.setCreateBy("sys");
+        //    exroom.setCreateBy(userService.getusernamebysu());
+        exroom.setCreateBy(userService.getusernamebysu());
         try{
             exroomDAO.save(exroom);
             return 1;
@@ -170,7 +175,7 @@ public class ExroomServiceimpl implements ExroomService {
         //   Set<String> set_old = new HashSet<String>();
         //  set_old.add(uno);
         //   boolean ans = set.contains(uno);
-        boolean ans_2 =redisService.sHasKey(exid, uno);
+        boolean ans_2 =redisService.sHasKey("EXP:"+exid, uno);
         return ans_2;
     }
 
@@ -185,7 +190,7 @@ public class ExroomServiceimpl implements ExroomService {
         //Set<String> set = new HashSet<String>();
         //  set.add(uno);
         //逻辑
-        boolean ans = redisService.setadd(exid, uno);
+        boolean ans = redisService.setadd("EXP:"+exid, uno);
 
         return ans;
     }
@@ -214,12 +219,30 @@ public class ExroomServiceimpl implements ExroomService {
     }
 
     @Override
-    public List<Exroom> getLastThreeExam(String name) {
-        return exroomDAO.getLastThree(name);
+    public List<Exroom> getLastThreeExam() {
+        String username = userService.getusernamebysu();
+        if(redisService.get("EXBY"+username)==null){
+            List<Exroom> exroomList = exroomDAO.getLastThree(username);
+            redisService.set("EXBY"+username,exroomList,7200);
+            return exroomList;
+        }
+        else {
+            return (List<Exroom>)redisService.get("EXBY"+username);
+
+        }
     }
 
     @Override
     public List<Exroom> getSLastThreeExam() {
-        return exroomDAO.getSLastThree();
+        if(redisService.get("NEWTEST")==null){
+            List<Exroom> newexroom = exroomDAO.getSLastThree();;
+            redisService.set("NEWTEST",newexroom,600);
+            return newexroom;
+        }
+        else {
+            return (List<Exroom>)redisService.get("NEWTEST");
+
+        }
+
     }
 }

@@ -2,6 +2,7 @@ package com.exam.result;
 
 public enum ExceptionMsg {
     SUCCESS("200", "SUCCESS"),
+    FAIL_MICRO("501", "服务保护机制已启用"),
     Upload_SUCCESS("200", "上传成功"),
     SUCCESS_GETUSER("200","DB获取用户成功"),
     SUCCESS_GETUSERR("200","Redis,获取用户成功"),

@@ -38,6 +38,8 @@ public class PaperServiceimpl implements PaperService {
     ExamDataService examDataService;
     @Autowired
     PaperDAO paperDAO;
+    @Autowired
+    UserService userService;
 
     @Override
     public List<Paper> listPaper() {
@@ -51,7 +53,7 @@ public class PaperServiceimpl implements PaperService {
         Long createtime = now.getTime();
         paper.setCreateTime(createtime);
         paper.setUpdateTime(createtime);
-        paper.setCreateBy("user");
+        paper.setCreateBy(userService.getusernamebysu());
         //-------获取题目列表方法一
       //  List<Integer> qnumlist = paper.getQidList();
         //List<Questions> questionsList = questionsService.listallbyidset(qnumlist);
