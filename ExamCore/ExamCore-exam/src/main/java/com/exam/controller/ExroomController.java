@@ -174,7 +174,7 @@ public class ExroomController implements Serializable {
         ExcelReader reader = ExcelUtil.getReader(file);
         List<Map<String,Object>>readAll =reader.readAll();
         List<Object> unolist = new ArrayList<>();
-        for(int i=0;i<=reader.getRowCount()-1;i++){
+        for(int i=0;i<=reader.getRowCount()-2;i++){
             String uno = readAll.get(i).get("学号").toString();
             unolist.add(uno);
             exroomService.putpermission(String.valueOf(exid), uno);
@@ -186,7 +186,7 @@ public class ExroomController implements Serializable {
     @ApiOperation("根据考场号获取该考场允许进入的考生名单")
     public ResponseData getpermissionset(String exid){
         //逻辑
-         Set<Object> list = redisService.setMembers("EXP"+exid);
+         Set<Object> list = redisService.setMembers("EXP:"+exid);
         //   Set<String> set_old = new HashSet<String>();
         return new ResponseData(ExceptionMsg.SUCCESS,list);
     }
@@ -216,7 +216,7 @@ public class ExroomController implements Serializable {
 
     @GetMapping("/last3exam")
     @ApiOperation("老师端最新发布的3场考试")
-    public ResponseData getLastThreeExam(@RequestParam String name){
+    public ResponseData getLastThreeExam(){
         return new ResponseData(ExceptionMsg.SUCCESS, exroomService.getLastThreeExam());
     }
 

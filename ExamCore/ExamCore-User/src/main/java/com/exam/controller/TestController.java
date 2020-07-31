@@ -3,11 +3,14 @@ package com.exam.controller;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.fastjson.JSONObject;
 
 import com.exam.rabbit.SenderA;
 import com.exam.result.ExceptionMsg;
 import com.exam.result.ResponseData;
+import com.exam.service.FallBackService;
+import com.exam.util.ExceptionUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,11 +51,20 @@ public class TestController implements Serializable {
     @PostMapping(value = "/testreceive")
     @CrossOrigin
     @ApiOperation("前端POST请求测试")
+    @SentinelResource(value = "testpost", blockHandler = "handleException_post", blockHandlerClass = {ExceptionUtil.class})
     public ResponseData testpost(@RequestBody Object str) {
         Object content = str;
         return new ResponseData(ExceptionMsg.SUCCESS,content);
     }
 
+    @SentinelResource(value = "resource2", blockHandler = "handleException", blockHandlerClass = {ExceptionUtil.class})
+    @RequestMapping(value="/sentinel/test2")
+    public ResponseData test2() {
+        Map<String,Object> map=new HashMap<>();
+        map.put("method","test2");
+        map.put("msg","自定义限流逻辑处理");
+        return new ResponseData(ExceptionMsg.SUCCESS,map);
+    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.exam.service.impl;
 
+import com.exam.service.RedisService;
 import com.exam.service.UserService;
 import com.exam.service.UserServiceFeign;
 import org.checkerframework.checker.units.qual.A;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 public class UserServiceimpl implements UserService {
     @Autowired
     UserServiceFeign userServiceFeign;
+    @Autowired
+    RedisService redisService;
     @Override
     public String getusername() {
         return userServiceFeign.aufeign();
@@ -26,6 +29,6 @@ public class UserServiceimpl implements UserService {
 
     @Override
     public String getUnoByUsername(String username) {
-        return null;
+        return (String) redisService.hmget("TK:"+username).get("uno");
     }
 }

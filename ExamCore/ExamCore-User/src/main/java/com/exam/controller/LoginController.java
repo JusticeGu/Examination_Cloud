@@ -1,11 +1,13 @@
 package com.exam.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.exam.Entity.User;
 import com.exam.dao.UserDAO;
 import com.exam.rabbit.SenderA;
 import com.exam.result.ExceptionMsg;
 import com.exam.result.ResponseData;
 import com.exam.service.AdminUserRoleService;
+import com.exam.service.FallBackService;
 import com.exam.service.RedisService;
 import com.exam.service.UserService;
 import com.exam.util.JwtUtils;
@@ -49,6 +51,7 @@ public class LoginController implements Serializable {
     @PostMapping("/api/register")
     @CrossOrigin
     @ApiOperation("用户注册接口")
+    @SentinelResource(value = "register", blockHandler = "handleException_register", blockHandlerClass = {FallBackService.class})
     public ResponseData register(@RequestBody User user,@RequestParam("code") String code) {
         if(!userService.checkmailcode(user.getEmail(),code)){
             return new ResponseData(ExceptionMsg.FAILED,"验证码错误，请重新输入");

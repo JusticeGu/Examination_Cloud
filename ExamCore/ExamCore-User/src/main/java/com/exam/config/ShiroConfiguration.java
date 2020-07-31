@@ -91,6 +91,8 @@ public class ShiroConfiguration {
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         filterChainDefinitionMap.put("/api/login", "anon"); // 可匿名访问api/
         filterChainDefinitionMap.put("/api/user/sendcheckcode", "anon"); // 可匿名访问
+        filterChainDefinitionMap.put("/api/user/resetpassword", "anon"); // 可匿名访问
+        filterChainDefinitionMap.put("/api/user/resetpwd", "anon"); // 可匿名访问
         filterChainDefinitionMap.put("/api/register", "anon"); // 可匿名访问
        // filterChainDefinitionMap.put("/api/aufeign", "anon"); // 可匿名访
         filterChainDefinitionMap.put("/logout", "logout"); // 退出登录
