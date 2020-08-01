@@ -12,6 +12,6 @@ public class MessageController {
     @GetMapping("/")
     public String rootcourse(){
         //逻辑
-        return "消息服务";
+        return "消息服务-";
     }
 }
