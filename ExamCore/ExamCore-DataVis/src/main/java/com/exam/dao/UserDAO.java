@@ -15,5 +15,5 @@ public interface UserDAO extends JpaRepository<User,Integer> {
     @Query(nativeQuery =true,value = "select uno from user where username = ?1")
     String findUnoByUsername(String username);
     void deleteByUId(int uid);
- //   User getByUsernameAndPassword(String username);
+    //   User getByUsernameAndPassword(String username);
 }

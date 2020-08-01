@@ -29,6 +29,8 @@ import java.util.stream.Collectors;
 @Service
 public class PaperServiceimpl implements PaperService {
     @Autowired
+    UserService userService;
+    @Autowired
     QuestionsService questionsService;
     @Autowired
     ExroomService exroomService;
@@ -38,8 +40,6 @@ public class PaperServiceimpl implements PaperService {
     ExamDataService examDataService;
     @Autowired
     PaperDAO paperDAO;
-    @Autowired
-    UserService userService;
 
     @Override
     public List<Paper> listPaper() {
@@ -53,9 +53,9 @@ public class PaperServiceimpl implements PaperService {
         Long createtime = now.getTime();
         paper.setCreateTime(createtime);
         paper.setUpdateTime(createtime);
-        paper.setCreateBy(userService.getusernamebysu());
+        paper.setCreateBy("user");
         //-------获取题目列表方法一
-      //  List<Integer> qnumlist = paper.getQidList();
+        //  List<Integer> qnumlist = paper.getQidList();
         //List<Questions> questionsList = questionsService.listallbyidset(qnumlist);
         //-------获取题目列表方法二
         String[] qulist = paper.getQuestionId().split(",");
@@ -63,7 +63,7 @@ public class PaperServiceimpl implements PaperService {
         for (int i=0;i<=qulist.length-1;i++){
             try {
                 Questions questions = questionsService.getquestionbyid(Integer.parseInt(qulist[i]));
-               // questions.
+                // questions.
                 questionl.add(questions);
                 String ans = questions.getAnswer();
             }catch (Exception e){
@@ -92,11 +92,6 @@ public class PaperServiceimpl implements PaperService {
         return paperDAO.findAll(pageable);
     }
 
-    /**
-     * 试卷模糊查找
-     * @param name
-     * @return
-     */
     @Override
     public List<PaperDTO> querypaper(String name) {
         List<Paper> papers =  paperDAO.findAllByNameLike(name);
@@ -104,16 +99,11 @@ public class PaperServiceimpl implements PaperService {
         return paperDTOS;
     }
 
-    /**
-     * 考生端获取试卷信息（传入试卷id获取试题(不含答案)）
-     * @param pid
-     * @return
-     */
     @Override
     public Map getPaperInfo(int pid) {
-    //    Map paperinfo = redisService.hmget("psh-"+pid);
-      //  if (paperinfo.size()!=0){
-      //      return paperinfo;}
+        //    Map paperinfo = redisService.hmget("psh-"+pid);
+        //  if (paperinfo.size()!=0){
+        //      return paperinfo;}
         Paper paper = findPaperbyid(pid);
         Map<String, Object> paperinfo = new HashMap();
         paperinfo.put("papername", paper.getName());
@@ -129,10 +119,9 @@ public class PaperServiceimpl implements PaperService {
         String json = JSON.toJSONString(map, true);
         List<Questions> questionList = JSON.parseArray(JSON.parseObject(json).getString("questionList"),Questions.class);
         List<QuestionsDTO> questionDTOS =questionList.stream().map(questions ->(QuestionsDTO) new QuestionsDTO().convertFrom(questions)).collect(Collectors.toList());
-       // Collections.shuffle(questionDTOS);
         paperinfo.put("questions",questionDTOS);
         redisService.hmset("psh-"+pid,paperinfo,3600);
-       // long time = redisService.getExpire("exroom-"+kid)
+        // long time = redisService.getExpire("exroom-"+kid)
         return paperinfo;
 
     }
@@ -201,7 +190,6 @@ public class PaperServiceimpl implements PaperService {
         //           infomsg.put("code","0");
         //           return infomsg;}
         //       int uid = userService.findByUsername(username).getUId();
-
         Map markinfo=markscore( pid,ansmap);
         System.out.println(markinfo);
         String username = userService.getusernamebysu();
@@ -211,24 +199,9 @@ public class PaperServiceimpl implements PaperService {
         if(ans==-1){infomsg.put("code","801");return infomsg;}
         infomsg.put("code","200");
         infomsg.put("score",markinfo);
-        //-------异步方法--------
-
 
 
         return infomsg;
-    }
-
-    /**
-     * 异步批阅方法
-     * @param uno
-     * @param kid
-     * @param pid
-     * @param ans
-     * @return
-     */
-    @Override
-    public boolean submitmark(int uno, int kid, int pid, Map ans) {
-        return false;
     }
 
     /**
@@ -258,14 +231,14 @@ public class PaperServiceimpl implements PaperService {
         synchronized (this) {
             // 获取试问题列表
             List<Questions> questions = JSONObject.parseObject(paper.getQucontent(),List.class);
-          //  List<Questions> questions = questionsService.getquestionbypid(pid);
+            //  List<Questions> questions = questionsService.getquestionbypid(pid);
             // 按照题目类型分组
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("count", questions.size());
             map.put("questionList", questions);
             String json = JSON.toJSONString(map, true);
             List<Questions> questionLists = JSON.parseArray(JSON.parseObject(json).getString("questionList"),Questions.class);
-      //      List<Questions> questionl =questionList.stream().map(questions ->(QuestionsDTO) new QuestionsDTO().convertFrom(questions)).collect(Collectors.toList());
+            //      List<Questions> questionl =questionList.stream().map(questions ->(QuestionsDTO) new QuestionsDTO().convertFrom(questions)).collect(Collectors.toList());
 
             Collection<List<Questions>> collection = questionLists.stream()
                     .sorted(Comparator.comparingInt(Questions::getType))
@@ -314,9 +287,9 @@ public class PaperServiceimpl implements PaperService {
         markinfo.put("wrong",wrong);
 
         // 封装分数参数，并将分数信息插入到分数表中
-       // Examdata examdata = new Examdata(uid, pid,kid, String.valueOf(score), wrongStr);
+        // Examdata examdata = new Examdata(uid, pid,kid, String.valueOf(score), wrongStr);
         // 此处调用插入接口
-    //    this.scoreService.save(scoreResult);
+        //    this.scoreService.save(scoreResult);
         long endTime=System.nanoTime();
         System.out.println("程序运行时间： "+(endTime-startTime)+"ns");
         return markinfo;

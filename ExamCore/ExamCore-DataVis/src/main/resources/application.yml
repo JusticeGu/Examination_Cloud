@@ -1,3 +1,4 @@
+
 server:
   port: 8031
 
@@ -13,6 +14,8 @@ spring:
       discovery:
         server-addr: nacos.q7w.cn:8848
       namespace: 60b4bf51-c630-4468-9d42-2a8671c08e9c
+  main:
+    allow-bean-definition-overriding: true
 
 management:
   endpoints:

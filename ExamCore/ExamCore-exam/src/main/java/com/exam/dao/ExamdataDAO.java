@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 /**
- * @author xiaogu
+ * @author xiaogu JunXxxi
  * @date 2020/7/17 17:21
  **/
 public interface ExamdataDAO extends JpaRepository<Examdata,Integer> {
@@ -16,8 +16,6 @@ public interface ExamdataDAO extends JpaRepository<Examdata,Integer> {
     List<Examdata> findAllByKid(int kid);
     @Query(nativeQuery =true,value = "select totalscore from examdata where kid = ?1 and uno = ?2")
     float findTotalscoreByKidAndUno(int kid, String uno);
-    @Query(nativeQuery =true,value = "select totalscore from examdata where kid = ?1")
-    List<Float> findTotalscoreByKid(int kid);
     @Query(nativeQuery =true,value = "select uno from examdata where kid = ?1")
     List<String> findUnoByKid(int kid);
     int countAllByKid(int kid);
@@ -54,5 +52,6 @@ public interface ExamdataDAO extends JpaRepository<Examdata,Integer> {
     @Query(nativeQuery =true,value = "select count(*) from examdata where update_time>= ?1-24*60*60*1000 and update_time < ?1 and uno = ?2")
     Integer getNumSExamPerDay(Long t, String uno);
     Examdata findByKidAndUno(int kid, String uno);
+    @Query(nativeQuery =true,value = "select eid from examdata where kid = ?1 limit 1")
+    int findFirstEidByKid(int kid);
 }
-

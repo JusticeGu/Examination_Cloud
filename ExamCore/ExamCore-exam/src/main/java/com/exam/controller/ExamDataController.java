@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 /**
- * @author xiaogu
+ * @author xiaogu JunXxxi
  * @date 2020/7/17 18:09
  **/
 @RestController
@@ -67,3 +67,5 @@ public class ExamDataController {
         else return new ResponseData(ExceptionMsg.SUCCESS,data);
     }
 }
+
+

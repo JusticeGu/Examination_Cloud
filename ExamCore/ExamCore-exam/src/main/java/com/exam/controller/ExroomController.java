@@ -40,8 +40,6 @@ public class ExroomController implements Serializable {
     ExroomService exroomService;
     @Autowired
     PaperService paperService;
-    @Autowired
-    UserService userService;
     @GetMapping("/list")
     @ApiOperation("全部考试(场)列表")
     @CrossOrigin
@@ -80,9 +78,7 @@ public class ExroomController implements Serializable {
     @PostMapping("/enter")
     @CrossOrigin
     @ApiOperation("进入考试(场)")
-    public ResponseData enterexroom(@RequestBody Exroom exroom,HttpServletRequest request) {
-        String username= "username";
-        if (username==null){return new ResponseData(ExceptionMsg.FAILED,"请登陆后再进入考场"); }
+    public ResponseData enterexroom(@RequestBody Exroom exroom) {
         Map status = exroomService.enterExroom(exroom.getKid());
         switch (status.get("code").toString()) {
             case "0":
@@ -97,6 +93,8 @@ public class ExroomController implements Serializable {
                 return new ResponseData(ExceptionMsg.FAILED,"您已参加过次考试且次数超过允许考试次数上限");
             case "5":
                 return new ResponseData(ExceptionMsg.FAILED,"为获取到您的学号信息，请先绑定学号后再参加考试");
+            case "6":
+                return new ResponseData(ExceptionMsg.FAILED,"请登陆后再进入考场");
         }
         return new ResponseData(ExceptionMsg.FAILED_F,"后端错误");
     }
@@ -189,7 +187,7 @@ public class ExroomController implements Serializable {
     @ApiOperation("根据考场号获取该考场允许进入的考生名单")
     public ResponseData getpermissionset(String exid){
         //逻辑
-         Set<Object> list = redisService.setMembers("EXP:"+exid);
+        Set<Object> list = redisService.setMembers("EXP:"+exid);
         //   Set<String> set_old = new HashSet<String>();
         return new ResponseData(ExceptionMsg.SUCCESS,list);
     }
@@ -197,11 +195,11 @@ public class ExroomController implements Serializable {
     @ApiOperation("外部核验许可")
     public ResponseData checkpermissionset(String exid,String uno){
         //逻辑
-       if (exroomService.checkpermission(exid, uno)){
-        return new ResponseData(ExceptionMsg.SUCCESS,"验证成功，考生在此考场考试范围");}
-       else {
-           return new ResponseData(ExceptionMsg.FAILED_V,"考生不允许参与此考试");
-       }
+        if (exroomService.checkpermission(exid, uno)){
+            return new ResponseData(ExceptionMsg.SUCCESS,"验证成功，考生在此考场考试范围");}
+        else {
+            return new ResponseData(ExceptionMsg.FAILED_V,"考生不允许参与此考试");
+        }
     }
     @DeleteMapping("/delexroom")
     @CrossOrigin
