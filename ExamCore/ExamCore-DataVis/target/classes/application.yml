@@ -1,0 +1,44 @@
+
+server:
+  port: 8031
+
+spring:
+  application:
+    name: ExamDataVis
+  boot:
+    admin:
+      client:
+        url: http://nacos.q7w.cn:8769
+  cloud:
+    nacos:
+      discovery:
+        server-addr: nacos.q7w.cn:8848
+      namespace: 60b4bf51-c630-4468-9d42-2a8671c08e9c
+  main:
+    allow-bean-definition-overriding: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" #暴露所有节点
+    health:
+      sensitive: false #关闭过滤敏感信息
+  endpoint:
+    health:
+      show-details: ALWAYS  #显示详细信息
+
+feign:
+  hystrix:
+    enabled: true
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 60000
