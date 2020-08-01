@@ -73,7 +73,7 @@ public class UserController implements Serializable {
     @SentinelResource(value = "resetpassword", blockHandler = "handleException_resetpassword", blockHandlerClass = {FallBackService.class})
     public ResponseData resetpassword(@RequestBody User user){
         if (userService.usernamemailcheck(user.getUsername(), user.getEmail())){
-            String content = "您正在进行修改密码操作，点击链接修改密码（5分钟有效） "+"http://localhost:8080/reset_pwd?url="
+            String content = "您正在进行修改密码操作，点击链接修改密码（5分钟有效） "+"http://hippo-exam.q7w.cn/reset_pwd?url="
                     +userService.sengmailvalidurl(user.getUsername())+"&name="+user.getUsername();
 
             queueSender.sendemail( user.getEmail(), "【河马在线考试】您正在进行重置密码",content);

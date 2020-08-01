@@ -92,6 +92,11 @@ public class PaperServiceimpl implements PaperService {
         return paperDAO.findAll(pageable);
     }
 
+    /**
+     * 试卷模糊查找
+     * @param name
+     * @return
+     */
     @Override
     public List<PaperDTO> querypaper(String name) {
         List<Paper> papers =  paperDAO.findAllByNameLike(name);
@@ -99,6 +104,11 @@ public class PaperServiceimpl implements PaperService {
         return paperDTOS;
     }
 
+    /**
+     * 考生端获取试卷信息（传入试卷id获取试题(不含答案)）
+     * @param pid
+     * @return
+     */
     @Override
     public Map getPaperInfo(int pid) {
     //    Map paperinfo = redisService.hmget("psh-"+pid);
@@ -119,7 +129,7 @@ public class PaperServiceimpl implements PaperService {
         String json = JSON.toJSONString(map, true);
         List<Questions> questionList = JSON.parseArray(JSON.parseObject(json).getString("questionList"),Questions.class);
         List<QuestionsDTO> questionDTOS =questionList.stream().map(questions ->(QuestionsDTO) new QuestionsDTO().convertFrom(questions)).collect(Collectors.toList());
-        Collections.shuffle(questionDTOS);
+       // Collections.shuffle(questionDTOS);
         paperinfo.put("questions",questionDTOS);
         redisService.hmset("psh-"+pid,paperinfo,3600);
        // long time = redisService.getExpire("exroom-"+kid)
@@ -191,6 +201,7 @@ public class PaperServiceimpl implements PaperService {
         //           infomsg.put("code","0");
         //           return infomsg;}
         //       int uid = userService.findByUsername(username).getUId();
+
         Map markinfo=markscore( pid,ansmap);
         System.out.println(markinfo);
         String username = userService.getusernamebysu();
@@ -200,9 +211,24 @@ public class PaperServiceimpl implements PaperService {
         if(ans==-1){infomsg.put("code","801");return infomsg;}
         infomsg.put("code","200");
         infomsg.put("score",markinfo);
+        //-------异步方法--------
+
 
 
         return infomsg;
+    }
+
+    /**
+     * 异步批阅方法
+     * @param uno
+     * @param kid
+     * @param pid
+     * @param ans
+     * @return
+     */
+    @Override
+    public boolean submitmark(int uno, int kid, int pid, Map ans) {
+        return false;
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.exam.config;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import feign.Retryer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -21,7 +23,10 @@ import java.util.Enumeration;
  **/
 @Configuration
 public class FeignConfiguration implements RequestInterceptor {
-
+    @Bean
+    public Retryer feignRetryer(){
+        return new Retryer.Default(100,1000,5);
+    }
     @Override
     public void apply(RequestTemplate template) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder

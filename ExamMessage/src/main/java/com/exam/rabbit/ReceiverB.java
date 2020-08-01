@@ -25,8 +25,8 @@ public class ReceiverB {
         String title = map.get("subject").toString();
         String to = map.get("to").toString();
         String content = map.get("text").toString();
-   //     emailService.sendTextEmail(content, to, title);
-        System.out.println("Mail：已接收到来自队列的邮件:【 "+title+ "】正在处理...");
+        emailService.sendTextEmail(content, to, title);
+        System.out.println("Mail：已接收到来自队列的邮件:【 "+content+ "】正在处理...");
     }
 
 }

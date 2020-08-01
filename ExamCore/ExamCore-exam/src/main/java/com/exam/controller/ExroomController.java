@@ -8,6 +8,7 @@ import com.exam.result.ResponseData;
 import com.exam.service.ExroomService;
 import com.exam.service.PaperService;
 import com.exam.service.RedisService;
+import com.exam.service.UserService;
 import com.exam.util.FileUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -39,6 +40,8 @@ public class ExroomController implements Serializable {
     ExroomService exroomService;
     @Autowired
     PaperService paperService;
+    @Autowired
+    UserService userService;
     @GetMapping("/list")
     @ApiOperation("全部考试(场)列表")
     @CrossOrigin

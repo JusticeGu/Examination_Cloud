@@ -220,7 +220,7 @@ public class ExroomServiceimpl implements ExroomService {
 
     @Override
     public List<Exroom> getLastThreeExam() {
-        String username = userService.getusernamebysu();
+        String username = userService.getusername();
         if(redisService.get("EXBY"+username)==null){
             List<Exroom> exroomList = exroomDAO.getLastThree(username);
             redisService.set("EXBY"+username,exroomList,7200);

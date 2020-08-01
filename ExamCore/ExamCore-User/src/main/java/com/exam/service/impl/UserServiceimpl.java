@@ -98,6 +98,7 @@ public class UserServiceimpl implements UserService {
         if (username.isEmpty()||email.isEmpty()){return false;}
         if (redisService.hasKey("PWRS:"+username)){return false;}
         User user = userDAO.findByUsername(username);
+        if (user==null){return false;}
         if (user.getEmail().equals(email)){
             return true;
         }else {

@@ -93,15 +93,13 @@ public class ExamDataServiceimpl implements ExamDataService {
                 answer.setAnswerContent(mapValue);
                 answerService.saveAnswer(answer);
             }
-        }
-        else {
+        } else {
             for(Map.Entry<String, String> entry : ans.entrySet()){
                 int mapKey = Integer.parseInt(entry.getKey());
                 String mapValue = entry.getValue();
                 answerService.upadteAnswer(eid,mapKey,mapValue);
             }
         }
-
 
         examdata.setTotalscore(score);
         examdata.setWronglist(wronglist);

@@ -1,6 +1,5 @@
 package com.exam.service;
 
-import com.exam.config.FeignConfig;
 import com.exam.config.FeignConfiguration;
 import com.exam.service.impl.UserServiceFeignFallback;
 import org.springframework.cloud.openfeign.FeignClient;

@@ -11,6 +11,7 @@ import java.util.Map;
 
 public interface PaperService {
     public List<Paper> listPaper();
+    public boolean submitmark(int uno,int kid,int pid,Map ans);
     public Page<Paper> listpapersbynum(Pageable pageable);
     public List<PaperDTO> querypaper(String coursename);
     public int addqPaper(Paper paper);

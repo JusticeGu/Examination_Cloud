@@ -23,7 +23,7 @@ public class TestController {
     @ApiOperation("远程获取用户信息")
     @CrossOrigin
     public ResponseData listroom(){
-        String username = userService.getusername();
+        String username = userService.getusernamebysu();
         //逻辑
         return new ResponseData(ExceptionMsg.SUCCESS,username);
     }
