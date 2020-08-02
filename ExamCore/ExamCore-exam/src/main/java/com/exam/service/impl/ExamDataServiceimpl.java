@@ -24,10 +24,6 @@ import java.util.stream.Collectors;
  * @author xiaogu
  * @date 2020/7/17 17:23
  **/
-/**
- * @author xiaogu
- * @date 2020/7/17 17:23
- **/
 @Service
 public class ExamDataServiceimpl implements ExamDataService {
     @Autowired
@@ -84,6 +80,7 @@ public class ExamDataServiceimpl implements ExamDataService {
         int eid = examdata.getEid();
         int times = examdata.getTimes();
         if(times==1){
+            int i=1;
             for(Map.Entry<String, String> entry : ans.entrySet()){
                 int mapKey = Integer.parseInt(entry.getKey());
                 String mapValue = entry.getValue();
@@ -91,15 +88,19 @@ public class ExamDataServiceimpl implements ExamDataService {
                 answer.setEid(eid);
                 answer.setQid(mapKey);
                 answer.setAnswerContent(mapValue);
+                answer.setVisualQid(i);
+                i++;
                 answerService.saveAnswer(answer);
             }
-        } else {
+        }
+        else {
             for(Map.Entry<String, String> entry : ans.entrySet()){
                 int mapKey = Integer.parseInt(entry.getKey());
                 String mapValue = entry.getValue();
                 answerService.upadteAnswer(eid,mapKey,mapValue);
             }
         }
+
 
         examdata.setTotalscore(score);
         examdata.setWronglist(wronglist);
