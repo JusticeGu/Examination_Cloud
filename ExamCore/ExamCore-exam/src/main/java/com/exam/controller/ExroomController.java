@@ -43,14 +43,18 @@ public class ExroomController implements Serializable {
     @Autowired
     UserService userService;
     @GetMapping("/list")
-    @ApiOperation("全部考试(场)列表")
+    @ApiOperation("全部考试(场)列表(学生)")
     @CrossOrigin
-    public ResponseData listroom(){
-        //逻辑
-        return new ResponseData(ExceptionMsg.SUCCESS,exroomService.listExroom());
+    public ResponseData listroom(@RequestParam(value = "start",defaultValue = "0")Integer start,
+                                 @RequestParam(value = "num",defaultValue = "10")Integer num){
+        start = start<0?0:start;
+        Sort sort = Sort.by(Sort.Direction.DESC, "kid");
+        Pageable pageable = PageRequest.of(start, num, sort);
+        Page<Exroom> page = exroomService.listexroombynum(pageable);
+        return new ResponseData(ExceptionMsg.SUCCESS,page);
     }
     @RequestMapping(value = "/listnum", method = RequestMethod.GET)
-    @ApiOperation("全部考试(场)列表(分页)")
+    @ApiOperation("全部考试(场)列表(分页)(教师)")
     @CrossOrigin
     public ResponseData listroombunum(@RequestParam(value = "start",defaultValue = "0")Integer start,
                                       @RequestParam(value = "num",defaultValue = "10")Integer num)

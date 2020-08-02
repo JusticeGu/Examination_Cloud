@@ -92,7 +92,10 @@ public class ExroomServiceimpl implements ExroomService {
         String username = userService.getusernamebysu();
         return exroomDAO.findAllByCreateBy(username,pageable);
     }
-
+    @Override
+    public Page<Exroom> stulistexroombynum(Pageable pageable) {
+        return exroomDAO.findAll(pageable);
+    }
     @Override
     public List<String> stringToList(String strs){
         String str[] = strs.split(",");
