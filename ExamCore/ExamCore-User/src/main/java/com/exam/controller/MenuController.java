@@ -37,6 +37,7 @@ public class MenuController {
     public ResponseData refreshmecu() throws Exception {
         String username = SecurityUtils.getSubject().getPrincipal().toString();
         redisService.del(username+"menu");
+        redisService.del("TK:"+username);
         return new ResponseData(ExceptionMsg.SUCCESS,"缓存清理成功");
     }
     @GetMapping("/api/menu")

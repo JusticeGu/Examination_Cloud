@@ -46,7 +46,7 @@ public class ExroomServiceimpl implements ExroomService {
     public Map enterExroom(int kid) {
         Map ansmap = new HashMap();
         String username = userService.getusernamebysu();
-        if(username==null){
+        if(username.isEmpty()||username.equals("undefine")){
             ansmap.put("code","6");return ansmap;
         }
         Exroom exroomInDB = findExroom(kid);
@@ -56,12 +56,12 @@ public class ExroomServiceimpl implements ExroomService {
         if (createtime>=exroomInDB.getDeadline()||createtime<=exroomInDB.getStarttime()){
             ansmap.put("code","2");return ansmap;}//截止时间后进入拦截
         //String uno = userService.usernametouno(username);
-        String uno = redisService.hmget("TK:"+username).get("uno").toString();
+        Object uno = redisService.hget("TK:"+username,"uno");
         if(uno==null){ ansmap.put("code","5");return ansmap;}//学号拦截
-        if((!checkpermission(String.valueOf(kid),uno))&&exroomInDB.getGrouptype()==1){
+        if((!checkpermission(String.valueOf(kid),uno.toString()))&&exroomInDB.getGrouptype()==1){
             ansmap.put("code","3");
             return ansmap;}//不在考场接受范围拦截
-        int ans = examDataService.addexamdata(kid,exroomInDB.getPid(),uno,exroomInDB.getAllowtimes());
+        int ans = examDataService.addexamdata(kid,exroomInDB.getPid(),uno.toString(),exroomInDB.getAllowtimes());
         if (ans==-1||ans==2){  ansmap.put("code","4");return ansmap;}//超过考场进入上限
 
         //第一位进入考场的考生向redis中写考场信息，用于后期提交校验时间

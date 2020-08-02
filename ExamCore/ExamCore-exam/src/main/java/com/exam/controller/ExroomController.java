@@ -50,7 +50,7 @@ public class ExroomController implements Serializable {
         start = start<0?0:start;
         Sort sort = Sort.by(Sort.Direction.DESC, "kid");
         Pageable pageable = PageRequest.of(start, num, sort);
-        Page<Exroom> page = exroomService.listexroombynum(pageable);
+        Page<Exroom> page = exroomService.stulistexroombynum(pageable);
         return new ResponseData(ExceptionMsg.SUCCESS,page);
     }
     @RequestMapping(value = "/listnum", method = RequestMethod.GET)
@@ -100,7 +100,7 @@ public class ExroomController implements Serializable {
             case "5":
                 return new ResponseData(ExceptionMsg.FAILED,"为获取到您的学号信息，请先绑定学号后再参加考试");
             case "6":
-                return new ResponseData(ExceptionMsg.FAILED,"请登陆后再进入考场");
+                return new ResponseData(ExceptionMsg.FAILED,"信息获取失败，请登陆后再进入考场");
         }
         return new ResponseData(ExceptionMsg.FAILED_F,"后端错误");
     }
@@ -122,6 +122,8 @@ public class ExroomController implements Serializable {
                         status);
             case "2":
                 return new ResponseData(ExceptionMsg.FAILED,"提交失败，请检查数据");
+            case "801":
+                return new ResponseData(ExceptionMsg.FAILED_SUB,"您的考试信息存在问题、请不要通过非官方渠道参加考试");
         }
         return new ResponseData(ExceptionMsg.FAILED_F,"后端错误");
     }

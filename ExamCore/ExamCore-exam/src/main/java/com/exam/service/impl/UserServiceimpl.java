@@ -30,6 +30,6 @@ public class UserServiceimpl implements UserService {
 
     @Override
     public String getUnoByUsername(String username) {
-        return (String) redisService.hmget("TK:"+username).get("uno");
+        return (String) redisService.hget("TK:"+username,"uno");
     }
 }

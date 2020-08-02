@@ -193,6 +193,8 @@ public class PaperServiceimpl implements PaperService {
         Map markinfo=markscore( pid,ansmap);
         System.out.println(markinfo);
         String username = userService.getusernamebysu();
+        if(username.isEmpty()||username.equals("undefine"))
+        { infomsg.put("code","0");return infomsg;}
         String uno = userService.getUnoByUsername(username);
         int ans =  examDataService.updateexamdata(kid, pid, uno,
                 ansmap,(float) markinfo.get("score"),markinfo.get("wrong").toString());
