@@ -1,6 +1,8 @@
 package com.exam.dao;
 
 import com.exam.entity.Exroom;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -8,6 +10,8 @@ import java.util.List;
 
 public interface ExroomDAO extends JpaRepository<Exroom,Integer> {
     Exroom findByKid(int kid);
+    @Query(nativeQuery =true,value = "SELECT * FROM exroom WHERE create_by = ?1")
+    Page<Exroom> findAllByCreateBy(String username,Pageable pageable);
     List<Exroom> findAllByStarttimeBetween(long now,long ddl);
     @Query(nativeQuery =true,value = "select count(*) from exroom where create_time >= ?1-24*60*60*1000 and create_time < ?1 and create_by = ?2")
     Integer getNumExamPerDay(Long t, String name);

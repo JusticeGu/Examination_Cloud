@@ -56,7 +56,7 @@ public class JwtRealm extends AuthorizingRealm {
         String tk = "TK:"+username;
         // 查询数据库获取用户信息，此处使用 Map 来模拟数据库
         //    User user = userService.findByUsername(username);
-        Object user = redisService.hmget(tk).get("token");
+        Object user = redisService.hget(tk,"token");
         // 用户不存在
         if (user == null) {
             throw new UnknownAccountException("用户不存在！");

@@ -45,6 +45,8 @@ public class User extends BaseEntity implements Serializable {
     private boolean enabled;
     @Transient
     private List<AdminRole> roles;
+    @Transient
+    private int role;
 
 
     public User(int uId, String userName, String userPassword) {

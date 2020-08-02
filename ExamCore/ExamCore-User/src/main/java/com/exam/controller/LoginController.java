@@ -172,6 +172,7 @@ public class LoginController implements Serializable {
     public String aufeign() {
         try {
             String username = SecurityUtils.getSubject().getPrincipal().toString();
+            System.out.println("success:"+username);
             return username;
         }
         catch (Exception e){

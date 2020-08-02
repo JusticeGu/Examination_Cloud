@@ -89,7 +89,8 @@ public class ExroomServiceimpl implements ExroomService {
 
     @Override
     public Page<Exroom> listexroombynum(Pageable pageable) {
-        return exroomDAO.findAll(pageable);
+        String username = userService.getusernamebysu();
+        return exroomDAO.findAllByCreateBy(username,pageable);
     }
 
     @Override

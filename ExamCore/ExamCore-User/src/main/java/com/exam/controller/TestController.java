@@ -10,6 +10,7 @@ import com.exam.rabbit.SenderA;
 import com.exam.result.ExceptionMsg;
 import com.exam.result.ResponseData;
 import com.exam.service.FallBackService;
+import com.exam.service.RedisService;
 import com.exam.util.ExceptionUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +33,9 @@ public class TestController implements Serializable {
 
     @Autowired
     private SenderA queueSender;
+    @Resource
+    private RedisService redisService;
+
     private static final long serialVersionUID = 3033545151355633240L;
 
 
@@ -64,6 +68,12 @@ public class TestController implements Serializable {
         map.put("method","test2");
         map.put("msg","自定义限流逻辑处理");
         return new ResponseData(ExceptionMsg.SUCCESS,map);
+    }
+    @GetMapping(value = "/redisget")
+    @CrossOrigin
+    public ResponseData redistest(String key){
+        Map user = redisService.hmget(key);
+        return new ResponseData(ExceptionMsg.SUCCESS,user);
     }
 
 

@@ -40,15 +40,17 @@ public class ScoreUtil {
             for (Questions q : list) {
                 // 获取问题题目序号,提交的答案
               //  String res = request.getParameter(String.valueOf(q.getQid()));
-                String res = map.get(String.valueOf(q.getQid())).toString();
+                Object res = map.get(String.valueOf(q.getQid()));
+                if (res==null){
+                    wrongIds.add(String.valueOf(q.getQid()));
+                }else {
                 // 如果选项正确，加分
-                if (q.getAnswer().equals(res)) {
+                if (q.getAnswer().equals(res.toString())) {
                     sum += score;
                 } else {
                     // 选择错误，加入错题集
                     wrongIds.add(String.valueOf(q.getQid()));
-
-                }
+                }}
             }
         }
         // 组装信息

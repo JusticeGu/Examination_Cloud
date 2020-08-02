@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -217,6 +218,10 @@ public class UserServiceimpl implements UserService {
         //  user.setUser_password(new Sha256Hash(password,null,10).toHex());
         user.setUser_password(encodedPassword);
         userDAO.save(user);
+        int id = userDAO.findByUsername(username).getUId();
+        List<AdminRole> roles = new ArrayList();
+        roles.add(adminRoleService.findById(user.getRole()));
+        adminUserRoleService.saveRoleChanges(id, roles);
         return 1;
     }
     @Override

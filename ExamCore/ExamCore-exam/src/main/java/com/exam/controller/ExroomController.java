@@ -40,6 +40,8 @@ public class ExroomController implements Serializable {
     ExroomService exroomService;
     @Autowired
     PaperService paperService;
+    @Autowired
+    UserService userService;
     @GetMapping("/list")
     @ApiOperation("全部考试(场)列表")
     @CrossOrigin
@@ -47,7 +49,7 @@ public class ExroomController implements Serializable {
         //逻辑
         return new ResponseData(ExceptionMsg.SUCCESS,exroomService.listExroom());
     }
-    @GetMapping("/listnum")
+    @RequestMapping(value = "/listnum", method = RequestMethod.GET)
     @ApiOperation("全部考试(场)列表(分页)")
     @CrossOrigin
     public ResponseData listroombunum(@RequestParam(value = "start",defaultValue = "0")Integer start,

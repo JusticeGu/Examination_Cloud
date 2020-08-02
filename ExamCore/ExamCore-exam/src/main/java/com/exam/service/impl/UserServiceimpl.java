@@ -24,6 +24,7 @@ public class UserServiceimpl implements UserService {
 
     @Override
     public String getusernamebysu() {
+
         return userServiceFeign.aufeign();
     }
 

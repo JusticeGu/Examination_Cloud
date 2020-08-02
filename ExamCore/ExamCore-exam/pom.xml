@@ -47,6 +47,11 @@
         <version>1.2.68</version>
     </dependency>
     <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5.12</version>
+    </dependency>
+    <dependency>
         <groupId>net.minidev</groupId>
         <artifactId>json-smart</artifactId>
         <version>2.1.1</version>
@@ -57,6 +62,11 @@
         <artifactId>spring-cloud-starter-feign</artifactId>
         <version>1.4.3.RELEASE</version>
     </dependency>
+    <dependency>
+        <groupId>io.github.openfeign</groupId>
+        <artifactId>feign-httpclient</artifactId>
+    </dependency>
+
 </dependencies>
     <build>
         <plugins>
