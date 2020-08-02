@@ -154,10 +154,7 @@ public class ExamDataServiceimpl implements ExamDataService {
         Paper paper = findPaperbyid(pid);
         Map<String, Object> paperinfo = new HashMap();
         paperinfo.put("papername", paper.getName());
-        float sinscore = paper.getSinscore();
-        float subscore = paper.getSubscore();
-        float mulscore = paper.getMulscore();
-        float fullmark = sinscore+subscore+mulscore;
+        float fullmark = paperDAO.getTotalScoreByPid(pid);
         paperinfo.put("fullmark",fullmark);
         float yourscore = examdata.getTotalscore();
         paperinfo.put("yourscore",yourscore);
@@ -188,10 +185,7 @@ public class ExamDataServiceimpl implements ExamDataService {
         Paper paper = findPaperbyid(pid);
         Map<String, Object> paperinfo = new HashMap();
         paperinfo.put("papername", paper.getName());
-        float sinscore = paper.getSinscore();
-        float subscore = paper.getSubscore();
-        float mulscore = paper.getMulscore();
-        float fullmark = sinscore+subscore+mulscore;
+        float fullmark = paperDAO.getTotalScoreByPid(pid);
         paperinfo.put("fullmark",fullmark);
         float yourscore = examdata.getTotalscore();
         paperinfo.put("yourscore",yourscore);
