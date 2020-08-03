@@ -11,5 +11,5 @@ public class AnsmarkDTO {
 
     private List<String> wrongIds;
 
-    private List<Examdata> examdata;
+    //private List<Examdata> examdata;
 }

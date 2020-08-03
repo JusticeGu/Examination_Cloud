@@ -93,7 +93,7 @@ public class ExroomServiceimpl implements ExroomService {
         return exroomDAO.findAllByCreateBy(username,pageable);
     }
     @Override
-    public Page<Exroom> stulistexroombynum(Pageable pageable) {
+    public Page<Exroom> listexroostu(Pageable pageable) {
         return exroomDAO.findAll(pageable);
     }
     @Override

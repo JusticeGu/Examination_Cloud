@@ -11,6 +11,7 @@ public interface UserService {
     public boolean changePassword(String oldpwd,String pwd);
     public boolean usernamemailcheck(String username,String email);//用户名邮箱是否匹配
     public boolean isExist(String username);
+    public boolean unoisExist(String uno);
     public String usernametouno(String username);
     public boolean isable(String username);
     public boolean wxisable(String wxuid);

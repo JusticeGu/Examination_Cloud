@@ -74,7 +74,7 @@ public class ExamDataServiceimpl implements ExamDataService {
 
 
     @Override
-    public int updateexamdata(int kid, int pid, String uno, Map<String,String> ans, float score, String wronglist) {
+    public int updateexamdata(int kid, int pid, String uno, Map<String,String> ans) {
         Examdata examdata = examdataDAO.findByKidAndPidAndUno(kid, pid,uno);
         if (examdata==null){return -1; }
         int eid = examdata.getEid();
@@ -100,11 +100,27 @@ public class ExamDataServiceimpl implements ExamDataService {
                 answerService.upadteAnswer(eid,mapKey,mapValue);
             }
         }
+      //  examdata.setTotalscore(score);
+     //   examdata.setWronglist(wronglist);
 
+        Date now= new Date();
+        Long createtime = now.getTime();
+        examdata.setUpdateTime(createtime);
+        examdata.setStatus(2);
+        try{
+            examdataDAO.save(examdata);
+            return 1;
+        } catch (IllegalArgumentException e){
+            return 2;
+        }
+    }
 
-        examdata.setTotalscore(score);
-        examdata.setWronglist(wronglist);
-
+    @Override
+    public int updatescore(int kid, int pid, String uno, Map<String, String> ans, float score, String wronglist) {
+        Examdata examdata = examdataDAO.findByKidAndPidAndUno(kid, pid,uno);
+        if (examdata==null){return -1; }
+          examdata.setTotalscore(score);
+          examdata.setWronglist(wronglist);
         Date now= new Date();
         Long createtime = now.getTime();
         examdata.setUpdateTime(createtime);

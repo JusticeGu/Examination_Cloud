@@ -10,6 +10,7 @@ import com.exam.dto.PaperDTO;
 import com.exam.dto.QuestionsDTO;
 import com.exam.entity.Paper;
 import com.exam.entity.Questions;
+import com.exam.rabbit.SenderA;
 import com.exam.service.*;
 import com.exam.util.ScoreUtil;
 import com.exam.util.UpdateUtil;
@@ -40,6 +41,8 @@ public class PaperServiceimpl implements PaperService {
     ExamDataService examDataService;
     @Autowired
     PaperDAO paperDAO;
+    @Autowired
+    SenderA senderA;
 
     @Override
     public List<Paper> listPaper() {
@@ -53,7 +56,7 @@ public class PaperServiceimpl implements PaperService {
         Long createtime = now.getTime();
         paper.setCreateTime(createtime);
         paper.setUpdateTime(createtime);
-        paper.setCreateBy("user");
+        paper.setCreateBy(userService.getusernamebysu());
         //-------获取题目列表方法一
         //  List<Integer> qnumlist = paper.getQidList();
         //List<Questions> questionsList = questionsService.listallbyidset(qnumlist);
@@ -187,17 +190,14 @@ public class PaperServiceimpl implements PaperService {
         //           infomsg.put("code","0");
         //           return infomsg;}
         //       int uid = userService.findByUsername(username).getUId();
-        Map markinfo=markscore( pid,ansmap);
-        System.out.println(markinfo);
+        //Map markinfo=markscore( pid,ansmap);
         String username = userService.getusernamebysu();
         String uno = userService.getUnoByUsername(username);
         int ans =  examDataService.updateexamdata(kid, pid, uno,
-                ansmap,(float) markinfo.get("score"),markinfo.get("wrong").toString());
+                ansmap);
         if(ans==-1){infomsg.put("code","801");return infomsg;}
         infomsg.put("code","200");
-        infomsg.put("score",markinfo);
-
-
+        senderA.sendpaper(kid, pid, uno, ansmap);
         return infomsg;
     }
 

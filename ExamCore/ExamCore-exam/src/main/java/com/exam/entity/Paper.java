@@ -32,6 +32,10 @@ public class Paper extends BaseEntity implements Serializable {
     private String questionId;//问题号
     private String qucontent;//问题集合
     private float sinscore;//单选分数
+    private int sinsum;
+    private int mulsum;
+    private int subsum;
+    private float totalscore;
     private float mulscore;//多选分数
     private float subscore;//主观分数
     @Transient

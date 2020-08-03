@@ -13,6 +13,7 @@ import java.util.Map;
 public interface ExroomService {
     public List<Exroom> listExroom();
     public Page<Exroom> listexroombynum(Pageable pageable);
+    public Page<Exroom> listexroostu(Pageable pageable);
     public int addExroom(Exroom exroom);
     public int modifyExroom(Exroom exroom);
     public int delExroom(int kid);
@@ -25,7 +26,6 @@ public interface ExroomService {
     public boolean checkpermission(String exid, String uno);
     public int startexrooom(int kid);
     public int endroom(int kid);
-    public Page<Exroom> stulistexroombynum(Pageable pageable);
     public int uploadgrouplist(MultipartFile multipartFile);
     public List<Exroom> getNotStartList();
     public List<Exroom> getStartedList();

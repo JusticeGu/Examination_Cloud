@@ -42,15 +42,17 @@ public class ExroomController implements Serializable {
     PaperService paperService;
     @Autowired
     UserService userService;
+
     @GetMapping("/list")
-    @ApiOperation("全部考试(场)列表(学生)")
+    @ApiOperation("全部考试(场)列表(分页)学生端")
     @CrossOrigin
     public ResponseData listroom(@RequestParam(value = "start",defaultValue = "0")Integer start,
-                                 @RequestParam(value = "num",defaultValue = "10")Integer num){
+                                      @RequestParam(value = "num",defaultValue = "10")Integer num)
+    {
         start = start<0?0:start;
         Sort sort = Sort.by(Sort.Direction.DESC, "kid");
         Pageable pageable = PageRequest.of(start, num, sort);
-        Page<Exroom> page = exroomService.stulistexroombynum(pageable);
+        Page<Exroom> page = exroomService.listexroostu(pageable);
         return new ResponseData(ExceptionMsg.SUCCESS,page);
     }
     @RequestMapping(value = "/listnum", method = RequestMethod.GET)
@@ -118,8 +120,7 @@ public class ExroomController implements Serializable {
                 return new ResponseData(ExceptionMsg.FAILED,"登录信息获取失败，请重试或联系管理员，严禁使用" +
                         "第三方工具进行提交");
             case "200":
-                return new ResponseData(ExceptionMsg.SUCCESS_ER,"提交成功，你的成绩信息为" +
-                        status);
+                return new ResponseData(ExceptionMsg.SUCCESS_ER,"提交成功，请等待考试结束后再查看成绩" );
             case "2":
                 return new ResponseData(ExceptionMsg.FAILED,"提交失败，请检查数据");
             case "801":

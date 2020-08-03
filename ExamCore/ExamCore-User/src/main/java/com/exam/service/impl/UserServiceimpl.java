@@ -129,6 +129,13 @@ public class UserServiceimpl implements UserService {
         User user = userDAO.findByWxuid(wxuid);
         return null!=user;
     }
+
+    @Override
+    public boolean unoisExist(String uno) {
+        User user = userDAO.findByUno(uno);
+        return null!=user;
+    }
+
     @Override
     public boolean deleteUser(User user) {
         User userInDB = userDAO.findById(user.getUId());
@@ -208,6 +215,7 @@ public class UserServiceimpl implements UserService {
         if (username.equals("") || password.equals("")) { return 0; }
         boolean exist = isExist(username);
         if (exist) { return 2; }
+        if (unoisExist(uno)) { return 2; }
         // 默认生成 16 位盐
         String salt = new SecureRandomNumberGenerator().nextBytes().toString();
         int times = 2;
